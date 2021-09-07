@@ -52,11 +52,11 @@ private boolean validationQuantity(Long productId) {
 }
 ```
 
-![2](../assets/image/mysql_user_level_lock/2.png)
+![2](/assets/image/mysql_user_level_lock/2.png)
 
 재고가 3개가 남아있기 때문에 주문량도 3개이길 바라지만 총 10개의 주문이 생성되었습니다. 이러한 문제가 발생하는 이유는 스레드가 다음과 같이 동작하기 때문입니다.
 
-![3](../assets/image/mysql_user_level_lock/3.png)
+![3](/assets/image/mysql_user_level_lock/3.png)
 
 정상적으로 재고가 관리되려면 스레드1에서 재고를 조회한 후 재고를 차감시키고 스레드2로 넘어가 스레드 2에서 재고를 조회한 후 재고를 차감시키는 순서로 실행이 되어야 합니다. 하지만 실제로 스레드는 번갈아가며 실행되기 때문에 스레드1에서 재고를 차감시키기전에 스레드2에서 재고를 조회를 할 수 있습니다.
 
@@ -70,7 +70,7 @@ private boolean validationQuantity(Long productId) {
 public synchronized int addOrder(Long productId)
 ```
 
-![4](../assets/image/mysql_user_level_lock/4.png)
+![4](/assets/image/mysql_user_level_lock/4.png)
 
 정상적으로 3개의 주문만 증가한것을 확인할 수 있습니다.
 
@@ -173,7 +173,7 @@ private void releaseLock(String lockStr, Connection connection) {
 }
 ```
 
-![5](../assets/image/mysql_user_level_lock/5.png)
+![5](/assets/image/mysql_user_level_lock/5.png)
 
 10개의 요청을 전송하면 정상적으로 3개의 주문건만 들어온것을 확인할 수 있습니다.
 
