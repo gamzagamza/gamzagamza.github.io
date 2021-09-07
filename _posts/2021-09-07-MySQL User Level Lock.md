@@ -132,11 +132,11 @@ public int addOrder(Long productId) {
 }
 
 private void getLock(String lockStr, int timeout, Connection connection) {
-		String sql = "SELECT GET_LOCK(?, ?)";
+    String sql = "SELECT GET_LOCK(?, ?)";
 
     try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
       
-				preparedStatement.setString(1, lockStr);
+        preparedStatement.setString(1, lockStr);
         preparedStatement.setInt(2, timeout);
 
         try(ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -144,32 +144,32 @@ private void getLock(String lockStr, int timeout, Connection connection) {
 
             int result = resultSet.getInt(1);
             if(result != -1) {
-            		log.info("LOCK 수행 중 오류가 발생했습니다.");
+                log.info("LOCK 수행 중 오류가 발생했습니다.");
             }
         }
-		} catch (SQLException e) {
-				throw new RuntimeException(e);
-		}
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
 }
 
 private void releaseLock(String lockStr, Connection connection) {
-		String sql = "SELECT RELEASE_LOCK(?)";
+    String sql = "SELECT RELEASE_LOCK(?)";
 
-		try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-				preparedStatement.setString(1, lockStr);
+        preparedStatement.setString(1, lockStr);
 
         try(ResultSet resultSet = preparedStatement.executeQuery()) {
-						resultSet.next();
+            resultSet.next();
 
             int result = resultSet.getInt(1);
             if(result != -1) {
-              log.info("LOCK 수행 중 오류가 발생했습니다.");
-						}
-				}
-		} catch (SQLException e) {
-				throw new RuntimeException(e);
-		}
+                log.info("LOCK 수행 중 오류가 발생했습니다.");
+            }
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
 }
 ```
 
