@@ -1,4 +1,3 @@
-```
 ---
 title: "재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)"    
 layout: single    
@@ -12,7 +11,6 @@ toc_label: contents
 description: MySQL User Level Lock을 활용한 재고관리
 last_modified_at: 2021-09-07     
 ---
-```
 
 
 
