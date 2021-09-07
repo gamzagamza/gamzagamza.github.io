@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://gamzagamza.github.io//feed.xml" rel="self" type="application/atom+xml" /><link href="https://gamzagamza.github.io//" rel="alternate" type="text/html" /><updated>2021-09-07T13:53:13+09:00</updated><id>https://gamzagamza.github.io//feed.xml</id><title type="html">My memory</title><subtitle>Back-End 개발자 GAMZAGAMZA</subtitle><author><name>GAMZAGAMZA</name><email>wonjunyun8899@gmail.com</email></author><entry><title type="html">Redis optimistic lock</title><link href="https://gamzagamza.github.io//Redis-Optimistic-Lock/" rel="alternate" type="text/html" title="Redis optimistic lock" /><published>2021-09-07T00:00:00+09:00</published><updated>2021-09-07T00:00:00+09:00</updated><id>https://gamzagamza.github.io//Redis%20Optimistic%20Lock</id><content type="html" xml:base="https://gamzagamza.github.io//Redis-Optimistic-Lock/">&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+title: &quot;재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. Redis)&quot;    
+layout: single    
+read_time: true    
+comments: true   
+categories: 
+ - project  
+toc: true    
+toc_sticky: true    
+toc_label: contents    
+description: Redis Optimistic Lock을 활용한 재고관리
+last_modified_at: 2021-09-07     
+---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;재고-차감-동시성-문제&quot;&gt;재고 차감 동시성 문제&lt;/h2&gt;
+
+&lt;p&gt;A라는 상품이 현재 창고에 10개가 남아있는데 이 상품을 동시에 20명이 구매하려고 장바구니에 추가하면 개발자는 먼저 주문한 10명의 장바구니에만 상품이 담기는 결과를 원할 것 입니다.&lt;/p&gt;
+
+&lt;p&gt;그러한 결과가 나오는지 한번 테스트 해보겠습니다.&lt;/p&gt;</content><author><name>GAMZAGAMZA</name><email>wonjunyun8899@gmail.com</email></author><summary type="html">--- title: &quot;재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. Redis)&quot; layout: single read_time: true comments: true categories: - project toc: true toc_sticky: true toc_label: contents description: Redis Optimistic Lock을 활용한 재고관리 last_modified_at: 2021-09-07 ---</summary></entry></feed>
