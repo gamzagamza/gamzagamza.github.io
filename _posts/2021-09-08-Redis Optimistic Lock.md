@@ -1,5 +1,5 @@
 ---
-Rztitle: "재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)"    
+Rztitle: "재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. Redis)"    
 layout: single    
 read_time: true    
 comments: true   
@@ -8,8 +8,8 @@ categories:
 toc: true    
 toc_sticky: true    
 toc_label: contents    
-description: MySQL User Level Lock을 활용한 재고관리
-last_modified_at: 2021-09-07
+description: Redis Optimistic Lock을 활용한 재고관리
+last_modified_at: 2021-09-08
 ---
 
 
@@ -108,7 +108,7 @@ public enum StockResult {
 }
 ```
 
-![스크린샷 2021-09-07 오후 5.57.06](/Users/ywj/Desktop/스크린샷 2021-09-07 오후 5.57.06.png)
+![1](/assets/image/redis_optimistic_lock/1.png)
 
 10개의 요청에 대해 한건의 주문이 성공했습니다.
 
