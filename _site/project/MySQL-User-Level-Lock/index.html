@@ -1,0 +1,556 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock) - My memory</title>
+<meta name="description" content="MySQL User Level Lock을 활용한 재고관리">
+
+
+  <meta name="author" content="GAMZAGAMZA">
+  
+  <meta property="article:author" content="GAMZAGAMZA">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="My memory">
+<meta property="og:title" content="재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)">
+<meta property="og:url" content="https://gamzagamza.github.io//project/MySQL-User-Level-Lock/">
+
+
+  <meta property="og:description" content="MySQL User Level Lock을 활용한 재고관리">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-09-07T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2021-09-07T00:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://gamzagamza.github.io//project/MySQL-User-Level-Lock/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "GAMZAGAMZA",
+      "url": "https://gamzagamza.github.io//"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="My memory Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          My memory
+          <span class="site-subtitle">기억하는 블로그</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/image/photo.jpeg" alt="GAMZAGAMZA" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">GAMZAGAMZA</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Back-End 개발자</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Daejeon, Korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:wonjunyun8899@gmail.com">
+            <meta itemprop="email" content="wonjunyun8899@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)">
+    <meta itemprop="description" content="재고 차감 동시성 문제">
+    <meta itemprop="datePublished" content="2021-09-07T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2021-09-07T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)
+</h1>
+          
+            <p class="page__date"><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated: <time datetime="2021-09-07T00:00:00+09:00">September 07, 2021</time></p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> contents</h4></header>
+              <ul class="toc__menu"><li><a href="#재고-차감-동시성-문제">재고 차감 동시성 문제</a></li><li><a href="#mysql-user-level-lock">MySql User Level Lock</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="재고-차감-동시성-문제">재고 차감 동시성 문제</h2>
+
+<p>A라는 상품이 현재 창고에 3개가 남아있는데 이 상품을 동시에 10명이 구매하려고 장바구니에 추가하면 개발자는 먼저 주문한 3명의 장바구니에만 상품이 담기는 결과를 원할 것 입니다.</p>
+
+<p>그러면 원하는 결과가 나오는지 한번 테스트 해보겠습니다.</p>
+
+<p>아래는 테스트를 위한 테이블 입니다. 상품과 주문 테이블은 1:N의 구조입니다.</p>
+
+<p><img src="/assets/image/mysql_user_level_lock/1.png" alt="1" /></p>
+
+<p>동시에 10명이 1이라는 id를 가진 상품을 장바구니에 담으려고 시도할 때 아무런 조치를 취하지 않고 단순히 상품의 재고와 현재 주문된 상품의 차이를 통해 재고를 차감시켰을때 결과 입니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">addOrder</span><span class="o">(</span><span class="nc">Long</span> <span class="n">productId</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">if</span><span class="o">(</span><span class="n">validationQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">orderMapper</span><span class="o">.</span><span class="na">addOrder</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="k">return</span> <span class="n">orderMapper</span><span class="o">.</span><span class="na">getProductOrderQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">validationQuantity</span><span class="o">(</span><span class="nc">Long</span> <span class="n">productId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">productQuantity</span> <span class="o">=</span> <span class="n">productMapper</span><span class="o">.</span><span class="na">getProductQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">productOrderQuantity</span> <span class="o">=</span> <span class="n">orderMapper</span><span class="o">.</span><span class="na">getProductOrderQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">productQuantity</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">productOrderQuantity</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">productQuantity</span> <span class="o">-</span> <span class="n">productOrderQuantity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/image/mysql_user_level_lock/2.png" alt="2" /></p>
+
+<p>재고가 3개가 남아있기 때문에 주문량도 3개이길 바라지만 총 10개의 주문이 생성되었습니다. 이러한 문제가 발생하는 이유는 스레드가 다음과 같이 동작하기 때문입니다.</p>
+
+<p><img src="/assets/image/mysql_user_level_lock/3.png" alt="3" /></p>
+
+<p>정상적으로 재고가 관리되려면 스레드1에서 재고를 조회한 후 재고를 차감시키고 스레드2로 넘어가 스레드 2에서 재고를 조회한 후 재고를 차감시키는 순서로 실행이 되어야 합니다. 하지만 실제로 스레드는 번갈아가며 실행되기 때문에 스레드1에서 재고를 차감시키기전에 스레드2에서 재고를 조회를 할 수 있습니다.</p>
+
+<p>이렇게 되면 정상적으로 남은 상품의 재고를 파악할 수 없기 때문에 위 결과처럼 재고 이상의 주문이 생성되게 됩니다.</p>
+
+<p>이를 간단히 해결하는 방법도 있습니다. 재고조회와 차감을 수행하는 메소드에 synchronized 키워드를 붙여주면 되면 해당 메소드를 실행한 스레드가 종료되기 전까지 다른 스레드는 접근하지 못하게 되어 정상적으로 원하는 동작을 수행합니다. synchronized 메소드를 붙여 테스트를 진행 해보겠습니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">addOrder</span><span class="o">(</span><span class="nc">Long</span> <span class="n">productId</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/image/mysql_user_level_lock/4.png" alt="4" /></p>
+
+<p>정상적으로 3개의 주문만 증가한것을 확인할 수 있습니다.</p>
+
+<p>synchronized 키워드를 붙여주어 동시성문제를 해결할 수 있는것을 보았지만 이 방식은 서버가 여러개 구성되어있는 다중 서버 환경에서는 적합하지 않습니다.</p>
+
+<p>결국 동시성 문제를 자바 코드만으로는 해결하기 부족하기에 데이터베이스에서 제어하는 방식을 생각했습니다.</p>
+
+<p>MySQL의 분산락을 이용하는 방식입니다.</p>
+
+<h2 id="mysql-user-level-lock">MySql User Level Lock</h2>
+
+<p>User Level Lock 이란 데이터베이스를 이용하는 사용자가 특정 “문자열”에 Lock을 걸수있는 기능을 말하며 다음과 같은 함수를 제공합니다.</p>
+
+<ul>
+  <li>GET_LOCK(str, timeout)
+    <ul>
+      <li>입력받은 문자열로 timeout초 동안 잠금획득을 시도합니다.</li>
+    </ul>
+  </li>
+  <li>RELEASE_LOCK(str)
+    <ul>
+      <li>입력받은 문자열의 잠금을 해제합니다.</li>
+    </ul>
+  </li>
+  <li>RELEASE_ALL_LOCKS()
+    <ul>
+      <li>모든 잠금을 해제하고 해제한 잠금의 개수를 리턴합니다.</li>
+    </ul>
+  </li>
+  <li>IS_FREE_LOCK(str)
+    <ul>
+      <li>입력받은 문자열로 잠금획득이 가능한지 확인합니다.</li>
+    </ul>
+  </li>
+  <li>IS_USED_LOCK(str)
+    <ul>
+      <li>입력받은 문자열의 잠금이 존재하는지 확인합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>User Level Lock의 함수들에 대해 알아봤으니 이제 구현을 해보겠습니다. 기존에 구매가능 여부 체크 후 구매 로직 사이에 LOCK을 걸어주면 됩니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">addOrder</span><span class="o">(</span><span class="nc">Long</span> <span class="n">productId</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+
+    <span class="k">try</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">())</span> <span class="o">{</span>
+      	<span class="c1">// 상품 ID로 락 획득</span>
+        <span class="n">getLock</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">productId</span><span class="o">),</span> <span class="mi">3</span><span class="o">,</span> <span class="n">connection</span><span class="o">);</span>
+
+      	<span class="c1">// 구매가능 여부 조회 후 구매</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">validationQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">orderMapper</span><span class="o">.</span><span class="na">addOrder</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+        <span class="o">}</span>
+				
+      	<span class="c1">// 락 해제</span>
+        <span class="n">releaseLock</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">productId</span><span class="o">),</span> <span class="n">connection</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">orderMapper</span><span class="o">.</span><span class="na">getProductOrderQuantity</span><span class="o">(</span><span class="n">productId</span><span class="o">);</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"time : "</span> <span class="o">+</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">));</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">getLock</span><span class="o">(</span><span class="nc">String</span> <span class="n">lockStr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">timeout</span><span class="o">,</span> <span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">"SELECT GET_LOCK(?, ?)"</span><span class="o">;</span>
+
+    <span class="k">try</span><span class="o">(</span><span class="nc">PreparedStatement</span> <span class="n">preparedStatement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">))</span> <span class="o">{</span>
+      
+        <span class="n">preparedStatement</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">lockStr</span><span class="o">);</span>
+        <span class="n">preparedStatement</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">timeout</span><span class="o">);</span>
+
+        <span class="k">try</span><span class="o">(</span><span class="nc">ResultSet</span> <span class="n">resultSet</span> <span class="o">=</span> <span class="n">preparedStatement</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">resultSet</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+
+            <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">result</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"LOCK 수행 중 오류가 발생했습니다."</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">releaseLock</span><span class="o">(</span><span class="nc">String</span> <span class="n">lockStr</span><span class="o">,</span> <span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">"SELECT RELEASE_LOCK(?)"</span><span class="o">;</span>
+
+    <span class="k">try</span><span class="o">(</span><span class="nc">PreparedStatement</span> <span class="n">preparedStatement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">))</span> <span class="o">{</span>
+
+        <span class="n">preparedStatement</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">lockStr</span><span class="o">);</span>
+
+        <span class="k">try</span><span class="o">(</span><span class="nc">ResultSet</span> <span class="n">resultSet</span> <span class="o">=</span> <span class="n">preparedStatement</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">resultSet</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+
+            <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">result</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"LOCK 수행 중 오류가 발생했습니다."</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/image/mysql_user_level_lock/5.png" alt="5" /></p>
+
+<p>10개의 요청을 전송하면 정상적으로 3개의 주문건만 들어온것을 확인할 수 있습니다.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#project" class="page__taxonomy-item" rel="tag">project</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-09-07">September 7, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+            
+      </div>
+    </div>
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/gamzagamza" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 GAMZAGAMZA. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
