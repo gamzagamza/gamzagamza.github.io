@@ -1,5 +1,5 @@
 ---
-title: "서버가 여러개일때 파일은 어디에 저장하지? (feat. Cloud Storage)"    
+title: "서버가 여러개일때 파일은 어디에 저장할까 (feat. Cloud Storage)"    
 layout: single    
 read_time: true    
 comments: true   
