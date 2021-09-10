@@ -77,7 +77,7 @@ IAM 및 관리자 > 서비스 계정으로 이동한 후 서비스 계정을 생
 
 
 
-### Download & Upload Source Code(Java)
+### Source Code(Java)
 
 다운로드와 업로드를 위한 유틸 클래스를 만들어 사용했습니다.
 
