@@ -1,8 +1,23 @@
+---
+title: "서버가 여러개일때 파일은 어디에 저장하지? (feat. Cloud Storage)"    
+layout: single    
+read_time: true    
+comments: true   
+categories: 
+ - project  
+toc: true    
+toc_sticky: true    
+toc_label: contents    
+description: GCP Cloud Storage를 사용한 파일 관리
+last_modified_at: 2021-09-10     
+---
+
+
 ## 다중 서버 환경에서의 파일 관리
 
 현재 Goods Shop의 서버 구성은 다음과 같이 2개의 Spring boot 서버로 이루어져 있습니다.
 
-![스크린샷 2021-09-10 오후 3.29.47](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.29.47.png)
+![1](/assets/image/cloud_storage/1.png)
 
 만약 사용자가 파일이나 이미지등을 업로드했을때 서버의 컴퓨터에 저장하게되면 해당 파일을 다운로드 받으려할때 무조건 파일이 있는 서버로 요청을 보내야 정상적으로 파일을 다운로드 받을 수 있을것입니다.
 
@@ -30,13 +45,13 @@ cloud storage란 Object Repository(객체 저장소)를 뜻하며, 데이터의 
 
 GCP Console에 접속해 Cloud Storage 화면으로 이동한 후 Bucket을 생성해보겠습니다. (프로젝트는 이미 생성되어있다고 가정하겠습니다.)
 
-![스크린샷 2021-09-10 오후 3.42.24](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.42.24.png)
+![1](/assets/image/cloud_storage/2.png)
 
 버킷이름은 해당 버킷을 사용하는 프로젝트이름_bucket 으로 설정하였고 데이터 저장위치는 Region에 서울로 하였습니다.
 
 나머지 설정은 Default 설정으로 건드리지 않고 bucket을 생성하겠습니다.
 
-![스크린샷 2021-09-10 오후 3.45.18](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.45.18.png)
+![3](/assets/image/cloud_storage/3.png)
 
 
 
@@ -48,15 +63,15 @@ IAM 및 관리자 > 서비스 계정으로 이동한 후 서비스 계정을 생
 
 그리고 다운로드 받은 키를 Spring Boot 프로젝트 resources 폴더로 이동시켜줍니다.
 
-![스크린샷 2021-09-10 오후 3.50.07](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.50.07.png)
+![4](/assets/image/cloud_storage/4.png)
 
 키파일을 이동시킨 후 properties 설정을 통해 해당 경로를 잡아주어야 하는데 다음과 같이 추가해주면 됩니다.
 
-![스크린샷 2021-09-10 오후 3.51.18](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.51.18.png)
+![5](/assets/image/cloud_storage/5.png)
 
 마지막 설정으로 pom.xml에 관련 의존성을 추가해주면 됩니다.
 
-![스크린샷 2021-09-10 오후 3.53.09](/Users/ywj/Desktop/스크린샷 2021-09-10 오후 3.53.09.png)
+![6](/assets/image/cloud_storage/6.png)
 
 이제 스프링을 실행해보고 아무런 오류가 발생하지 않으면 정상적으로 설정이 완료된 것 입니다.
 
