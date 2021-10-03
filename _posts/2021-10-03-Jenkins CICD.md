@@ -1,3 +1,19 @@
+---
+title: "CI/CD with Jenkins"    
+layout: single    
+read_time: true    
+comments: true   
+categories: 
+ - project  
+toc: true    
+toc_sticky: true    
+toc_label: contents    
+description: Jenkinsfile을 이용한 파이프라인 구축
+last_modified_at: 2021-10-03     
+---
+
+
+
 ## CI란?
 
 CI는 Continuous Integration의 약자로 지속적인 통합을 의미하는데 이는 빌드/테스트 과정을 말합니다.
