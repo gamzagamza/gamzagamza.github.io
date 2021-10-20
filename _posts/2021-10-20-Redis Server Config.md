@@ -1,3 +1,17 @@
+---
+title: "Redis 서버 구성"    
+layout: single    
+read_time: true    
+comments: true   
+categories: 
+ - project  
+toc: true    
+toc_sticky: true    
+toc_label: contents    
+description: Redis 서버 구성
+last_modified_at: 2021-10-20     
+---
+
 ## Persistance
 
 Redis는 In-Memory기반의 데이터베이스 이기 때문에 서버가 비정상적으로 종료될 경우 모든 데이터가 날아갈 위험성이 존재합니다.
@@ -29,11 +43,11 @@ Redis 서버가 비정상적으로 종료되어 메모리에 저장된 데이터
 
 예를들어 쇼핑몰에서 다음과 같이 유저가 상품 구매 요청을 보내면 Redis에 존재하는 해당 상품의 재고를 차감시키는 로직을 수행하는 서버가 존재합니다.
 
-![스크린샷 2021-10-20 오전 7.16.07](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 7.16.07.png)
+![1](/assets/image/redis_server_config/1.png)
 
 그런데 갑자기 Redis서버가 존재하는 건물에 정전이 발생해서 App에서 Redis로 요청을 보내지 못하게 되었습니다.
 
-![스크린샷 2021-10-20 오전 7.23.34](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 7.23.34.png)
+![2](/assets/image/redis_server_config/2.png)
 
 이러한 경우 Redis가 설치되어있는 데이터를 복구할 수 있는 파일이 존재하여도 해당 건물의 정전문제를 해결하기 전까지 유저는 쇼핑몰에서 어떤 상품도 구매하지 못하게 됩니다.
 
@@ -49,7 +63,7 @@ Redis 서버가 비정상적으로 종료되어 메모리에 저장된 데이터
 
 Redis가 지원하는 HA는 다음과 같은 Master - Replica 형태 입니다.
 
-![스크린샷 2021-10-20 오전 7.38.13](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 7.38.13.png)
+![3](/assets/image/redis_server_config/3.png)
 
 한 개의 마스터에 N개의 Replica 혹은 한 개의 마스터에 한 개의 Replica와 그 Replica에 연결된 Replica로 이루어진 형태로 구성이 가능합니다.
 
@@ -61,7 +75,7 @@ Redis가 지원하는 HA는 다음과 같은 Master - Replica 형태 입니다.
 
 하지만 걱정과는 달리 마스터 노드는 자식 프로세스(Child Process)를 만들어 백그라운드에서 덤프 파일을 생성하고 생성한 파일을 Replica에 전송하는데 다음과 그림과 같이 동작합니다.
 
-![스크린샷 2021-10-20 오전 7.50.00](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 7.50.00.png)
+![4](/assets/image/redis_server_config/4.png)
 
 Replica에서 Master노드로 replicaof 명령을 전송하면 마스터노드는 자식 프로세스를 생성해 덤프파일을 만들고, 만들어진 덤프파일을 Replica로 전송하게 됩니다.
 
@@ -91,7 +105,7 @@ sentinel을 번역하면 보초라는 뜻 인데 말 그대로 보초를 서는 
 
 sentinel을 통해 서버를 구성하면 다음과 같은 형태의 노드가 구성이 됩니다. Sentinel노드는 최소 3개 이상이어야 하며, 무조건 홀수 개 이어야 합니다.
 
-![스크린샷 2021-10-20 오전 8.23.40](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 8.23.40.png)
+![5](/assets/image/redis_server_config/5.png)
 
 Master노드에 문제가 생겨 종료되면 이를 감시하고 있는 Sentinel노드는 Master노드가 진짜 문제가 생겨 종료된 것인지 Sentinel노드끼리 투표를 진행하여 결론을 내립니다.
 
@@ -107,15 +121,21 @@ Application은 Sentinel노드를 통해 Master노드에 접근하므로 접근�
 
 Cluster방식은 Sentinel방식처럼 감시를 위한 노드를 따로 두는 것이 아닌 모든 노드가 서로를 감시하도록 하는 방식입니다.
 
-![스크린샷 2021-10-20 오전 8.41.47](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 8.41.47.png)
+![6](/assets/image/redis_server_config/6.png)
 
 기존의 다른 구성 방식들과는 차이가 존재하는데 바로 Master노드가 여러개 존재하는 것 입니다. Cluster를 사용하기 위해서는 최소 3개 이상의 Master노드가 필요합니다.
 
 이렇게 여러개로 구성된 Master노드는 각각 데이터를 저장하기위한 슬롯을 가지는데 총 16384개의 슬롯을 N개의 Master노드가 나누어 가지게 됩니다.
 
-![스크린샷 2021-10-20 오전 8.49.55](/Users/ywj/Desktop/스크린샷 2021-10-20 오전 8.49.55.png)
+![7](/assets/image/redis_server_config/7.png)
 
 이렇게 나누어진 슬롯에 Key값을 해싱하여 나온 결과를 통해 데이터를 저장할 슬롯의 위치를 파악하고 데이터를 저장합니다.
 
 
+
+만약 Master노드가 비정상적으로 종료되면 해당 Master노드와 연결된 Replica노드가 Master노드로 승격됩니다.
+
+또한, 1개의 Master노드에 연결된 Replica노드의 수는 무조건 1개일 필요는 없습니다.
+
+만약 A라는 Master노드에 2개의 Replica노드가 연결되어있고 B라는 Master노드에는 1개의 Replica노드가 연결되어있을때 B라는 Master노드에 연결된 Replica노드가 종료되어버리면 A의 Master노드에 연결되어있는 2개의 Replica노드 중 하나의 노드가 B라는 Master노드의 Replica노드로 변경됩니다.
 
