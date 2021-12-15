@@ -1,3 +1,17 @@
+---
+title: "Mysql Master/Slave"    
+layout: single    
+read_time: true    
+comments: true   
+categories: 
+ - project  
+toc: true    
+toc_sticky: true    
+toc_label: contents    
+description: Mysql Master/Slave 구조 적용
+last_modified_at: 2021-12-15     
+---
+
 ## Replication을 구성하는 이유
 
 만약 데이터베이스 서버가 하나만 존재할 경우 아래 이미지 처럼 애플리케이션은 하나의 데이터베이스에서 읽기와 쓰기 작업을 모두 수행하게 될 것입니다.
