@@ -8,7 +8,7 @@ categories:
 toc: true    
 toc_sticky: true    
 toc_label: contents    
-description: Mysql Master/Slave 구조 적용
+description: Mysql Master/Slave구조 적용
 last_modified_at: 2021-12-15     
 ---
 
