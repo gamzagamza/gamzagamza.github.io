@@ -46,7 +46,7 @@ Slave는 Master의 데이터를 복제함으로 써 데이터베이스의 데이
 
 **Master에 새로운 데이터베이스 생성**
 
-```mysql
+```
 CREATE DATABASE demo;
 ```
 
@@ -54,7 +54,7 @@ CREATE DATABASE demo;
 
 **Master에 생성한 데이터베이스의 권한을 가진 유저 생성**
 
-```mysql
+```
 GRANT ALL PRIVILEGES ON demo.* TO '{아이디}'@'%' IDENTIFIED BY '{비밀번호}';
 FLUSH PRIVILEGES;
 ```
@@ -63,7 +63,7 @@ FLUSH PRIVILEGES;
 
 **Master에 접근가능한 Replication용 유저 생성**
 
-```mysql
+```
 GRANT ALL REPLICATION SLAVE ON *.* TO '{아이디}'@'%' IDENTIFIED BY '{비밀번호}';
 ```
 
@@ -71,7 +71,7 @@ GRANT ALL REPLICATION SLAVE ON *.* TO '{아이디}'@'%' IDENTIFIED BY '{비밀�
 
 **Master의 my.cnf 수정**
 
-```shell
+```
 # vi /etc/mysql/conf.d/my.cnf
 
 [mysqld]
@@ -83,7 +83,7 @@ log-bin=mysql-bin
 
 **복제할 데이터베이스 dump파일 생성**
 
-```shell
+```
 mysqldump -u root -p demo > dump.sql
 ```
 
@@ -93,7 +93,7 @@ mysqldump -u root -p demo > dump.sql
 
 **Master 정보 확인**
 
-```mysql
+```
 # mysql -u root -p
 
 mysql> SHOW MASTER STATUS;
@@ -111,7 +111,7 @@ mysql> SHOW MASTER STATUS;
 
 **Slave에 데이터베이스 생성**
 
-```mysql
+```
 CREATE DATABASE demo;
 ```
 
@@ -119,7 +119,7 @@ CREATE DATABASE demo;
 
 **덤프파일 실행**
 
-```shell
+```
 mysql -u root -p demo < dump.sql
 ```
 
@@ -127,7 +127,7 @@ mysql -u root -p demo < dump.sql
 
 **Slave에 Master정보 입력**
 
-```mysql
+```
 mysql> CHANGE MASTER TO MASTER_HOST='{마스터 아이피}', MASTER_PORT=3306, MASTER_USER='{Replication용 유저 아이디}', MASTER_PASSWORD='{Replication용 유저 비밀번호}', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=1819;
 ```
 
