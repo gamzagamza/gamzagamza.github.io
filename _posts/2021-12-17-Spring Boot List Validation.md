@@ -50,6 +50,8 @@ public class ProjectApplyRequestDto {
 
 
 
+## @Validated
+
 이를 해결하는 방법은 생각보다 간단한데 다음처럼 Controller 클래스에 @Validated 어노테이션을 붙여주면 됩니다.
 
 ```java
@@ -99,6 +101,8 @@ void projectApplyWithoutApplyQuestionId() {
 ```
 
 
+
+## List interface 확장
 
 이를 해결할 수 있는 방법은 List 인터페이스를 확장해 프로퍼티에 @Valid 어노테이션을 정의한 새로운 클래스를 만드는 것 입니다.
 
