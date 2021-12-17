@@ -12,8 +12,6 @@ description: Spring Boot Redis Cache 적용
 last_modified_at: 2021-12-16     
 ---
 
-
-
 ## Cache란?
 
 캐시란 자주 사용되는 데이터를 메모리등의 공간에 담아두고 같은 데이터를 요청 했을 때 해당 공간에서 바로 꺼내 제공해주는 기술을 말합니다.
