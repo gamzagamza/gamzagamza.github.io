@@ -1,15 +1,15 @@
 ---
-title: "Spring Boot Redis Cache"    
-layout: single    
-read_time: true    
-comments: true   
-categories: 
- - project  
-toc: true    
-toc_sticky: true    
-toc_label: contents    
+title: "Spring Boot Redis Cache"
+layout: post
+read_time: true
+comments: true
+categories:
+ - project
+toc: true
+toc_sticky: true 
+toc_label: contents
 description: Spring Boot Redis Cache 적용
-last_modified_at: 2021-12-16     
+last_modified_at: 2021-12-16
 ---
 
 ## Cache란?
