@@ -1,6 +1,6 @@
 ---
 title: "재고가 한 개 남은 물건을 동시에 여러명이 장바구니에 담으면? (feat. MySql User Level Lock)"    
-layout: single    
+layout: post
 read_time: true    
 comments: true   
 categories: 
