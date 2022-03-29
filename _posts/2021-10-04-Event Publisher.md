@@ -1,6 +1,6 @@
 ---
 title: "Spring ApplicationEventPublisher + Async"    
-layout: single    
+layout: post
 read_time: true    
 comments: true   
 categories: 
