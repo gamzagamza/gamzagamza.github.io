@@ -1,6 +1,6 @@
 ---
 title: "Spring Boot List Validation"    
-layout: single    
+layout: post    
 read_time: true    
 comments: true   
 categories: 
