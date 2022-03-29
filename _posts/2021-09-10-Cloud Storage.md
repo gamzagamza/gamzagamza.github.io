@@ -1,6 +1,6 @@
 ---
 title: "서버가 여러개일때 파일은 어디에 저장할까 (feat. Cloud Storage)"    
-layout: single    
+layout: post
 read_time: true    
 comments: true   
 categories: 
